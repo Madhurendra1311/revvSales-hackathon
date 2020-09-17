@@ -2,15 +2,17 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { API } from '../core/constants/apiConstants'
 
-const LOGIN = API.ENDPOINTS.LOGIN
+const DOCUMENT_ACCEPTER = API.ENDPOINTS.DOCUMENT_ACCEPTER
+const DOCUMENT_ACCEPTANCE = API.ENDPOINTS.DOCUMENT_ACCEPTANCE
+const DOCUMENT_REJECTION = API.ENDPOINTS.DOCUMENT_REJECTION
 
 export default class Login extends Component {
     constructor(props) {
         super(props)
         this.state = {
+            firstName:'',
+            lastName:'',
             email:'',
-            password:'',
-            org_domain:'ftm36g41',
             isLoading:false
         }
     }
@@ -21,16 +23,16 @@ export default class Login extends Component {
         })
     }
 
-    handleLogin =()=>{
+    handleForm =()=>{
         this.setState({isLoading:true})
-        let { email, password, org_domain} = this.state
+        let { firstName, lastName,email} = this.state
         let payload = {
             user_email: email,
-            password: password,
-            org_domain: org_domain
+            first_name: firstName,
+            last_name: lastName
         }
         axios
-            .post(LOGIN, payload,{
+            .post(DOCUMENT_ACCEPTER, payload,{
                 headers:{
                     GrantType:"password"
                 }
@@ -40,11 +42,9 @@ export default class Login extends Component {
                     this.setState({isLoading:false})
                     window.localStorage.setItem("token",res.data.User.access_token)
                     window.localStorage.setItem("userDetails", JSON.stringify(res.data.User))
-                    
                     this.props.history.push('/home')
                 }
                 console.log(res.data.User)
-
             })
             .catch(err=>console.log(err))
     }
@@ -54,13 +54,15 @@ export default class Login extends Component {
         return (
             <div className="mt-5 pt-5 text-center">
                 <div className="mt-2">
-                    <input type="text" name="email" placeholder="Email" onChange={this.handleChange} />
+                    <input type="text" name="firstName" placeholder="FirstName" onChange={this.handleChange} />
                 </div>
                 <div className="mt-2">
-                    <input type="text" name="password" placeholder="Password" onChange={this.handleChange} />
+                    <input type="text" name="lastName" placeholder="LastName" onChange={this.handleChange} />
                 </div>
-                <button className="btn btn-primary mt-2" onClick={this.handleLogin}>Login</button>
-
+                <div className="mt-2">
+                    <input type="text" name="email" placeholder="Email" onChange={this.handleChange} />
+                </div>
+                <button className="btn btn-primary mt-2" onClick={this.handleForm}>SUBMIT</button>
                 {
                     this.state.isLoading ?
 
