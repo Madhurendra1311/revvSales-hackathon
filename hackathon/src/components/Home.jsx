@@ -2,6 +2,24 @@ import React, { Component } from 'react'
 import axios from 'axios'
 import { API } from '../core/constants/apiConstants'
 import { Link } from 'react-router-dom'
+import styled from "styled-components"
+
+const Wrapper = styled.div`
+    height: 80px;
+    width: 100%;
+    background-color: #202020;
+    margin: auto;
+    margin-top: 10px;
+   
+   position: relative;
+   padding: 10px;
+`
+
+const ContDiv = styled.div`
+    position: absolute;
+    bottom: 200px;
+    right: 300px;
+`
 
 
 const GET_ALL_DOCS = API.ENDPOINTS.GET_ALL_DOCS
@@ -42,52 +60,159 @@ export default class Home extends Component {
             .catch(err => console.log(err))
     }
 
+    handleSendRequest = (docId) => {
+        window.localStorage.setItem("docId", docId)
+        this.props.history.push('/form')
+    }
+ automate = async() => {
+        const response = await axios({
+          method: "post",
+          url: "http://localhost:5000/screenshot",
+          data: {
+            "email": "kmadhu1311@gmail.com",
+            "password": "madhu@1311",
+          },
+        })
+        console.log(response)
+      }
+
     render() {
-        const { userDetails, allDocs, isLoading, allTemp } = this.state
+        const { userDetails, allDocs, isLoading } = this.state
         console.log(allDocs)
         return (
-            <div>
-                {
-                    !isLoading ?
-                        <div>
-                            {
-                                userDetails ?
-                                    <div>
-                                        {userDetails.first_name}
-                                    </div>
-                                    :
-                                    null
-                            }
+            <div style = {{backgroundColor: "#111544" }}>
+                <Wrapper>
 
+                </Wrapper>
+                <div>
+                    <img width="100%" src="https://static.energyresourcing.com/wp-content/uploads/2019/02/22105030/recruitment-agency-gives-you-access-to-talent-pool.jpg" class="img-fluid" alt="https://static.energyresourcing.com/wp-content/uploads/2019/02/22105030/recruitment-agency-gives-you-access-to-talent-pool.jpg" />
+                    <div class="carousel-caption ">
+                        {
+                            // !isLoading ?
                             <div>
-                                <Link to="/createdocument"><button>Create Document</button></Link>
-                                <Link to="/form"><button>Acceptors</button></Link>
-                            </div>
-                                    
-                            {
-                                allDocs && allDocs.length > 0 ?
-                                <div>
-                                    {
-                                        allDocs.map(data=>{
-                                            return(
+                                <ContDiv>
+                                    <div style={{ display: "flex", flexDirection: "column", flex: 1 }}>
+                                        {
+                                            userDetails ?
                                                 <div>
-                                                    <h2>{data.name}</h2>
-                                
+                                                    Welcome{" "}{userDetails.first_name}
                                                 </div>
-                                            )
-                                        })
-                                    }
-                                </div>
-                                :
-                                null
-                            }
-                        </div>
-                        :
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                }
+                                                :
+                                                null
+                                        }
+
+                                        <div>
+                                            <Link to="/createdocument"><button style={{
+                                                outline: "none", border: "none",
+                                                borderRadius: 5,
+                                                width: 300,
+                                                margin: 10,
+                                                padding: 10
+                                            }}>Create Document</button></Link>
+                                        </div>
+                                    </div>
+                                </ContDiv>
+
+
+                                {/* <button onClick={this.automate}>Automate</button> */}
+
+
+                                
+                            </div>
+                            
+                        }
+                    </div>
+                    {
+                                    allDocs && allDocs.length > 0 ?
+                                        <div>
+                                            <table class="table" style = {{textAlign: "center" }}>
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <th scope="col">Documents</th>
+                                                        <th scope="col">Send Request</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {
+                                                        allDocs.map(data => {
+                                                            return (
+                                                                <tr>
+                                                                    <th scope="row" style = {{color: "white"}}>{data.name}</th>
+                                                                    <td> <button style={{
+                                                outline: "none", border: "none",
+                                                borderRadius: 5,
+                                                width: 200,
+                                                margin: 10,
+                                                padding: 10
+                                            }}onClick={() => this.handleSendRequest(data.id)}>Click here</button></td>
+                                                                </tr>
+                                                            )
+                                                        })
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        :
+                                        null
+                                }
+
+                </div>
             </div>
         )
     }
 }
+
+
+// <div>
+//                 {
+//                     !isLoading ?
+//                         <div>
+//                             {
+//                                 userDetails ?
+//                                     <div>
+//                                         {userDetails.first_name}
+//                                     </div>
+//                                     :
+//                                     null
+//                             }
+
+//                             <div>
+//                                 <Link to="/createdocument"><button>Create Document</button></Link>
+//                             </div>
+//                             <button onClick={this.automate}>Automate</button>
+
+
+//                             {
+//                                 allDocs && allDocs.length > 0 ?
+//                                     <div>
+//                                         <table class="table">
+//                                             <thead class="thead-dark">
+//                                                 <tr>
+//                                                     <th scope="col">Documents</th>
+//                                                     <th scope="col">Send Request</th>
+//                                                 </tr>
+//                                             </thead>
+//                                             <tbody>
+//                                                 {
+//                                                     allDocs.map(data => {
+//                                                         return (
+//                                                             <tr>
+//                                                                 <th scope="row">{data.name}</th>
+//                                                                 <td> <button onClick={() => this.handleSendRequest(data.id)}>Click here</button></td>
+//                                                             </tr>
+//                                                         )
+//                                                     })
+//                                                 }
+//                                             </tbody>
+//                                         </table>
+//                                     </div>
+//                                     :
+//                                     null
+//                             }
+//                         </div>
+//                         :
+//                         <div class="spinner-border" role="status">
+//                             <span class="sr-only">Loading...</span>
+//                         </div>
+//                 }
+//             </div>
