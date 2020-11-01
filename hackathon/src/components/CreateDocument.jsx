@@ -157,37 +157,3 @@ export default class createDocument extends Component {
     }
 }
 
-{/* <div>
-                {
-                    !isLoading ?
-                        <div>
-                            {
-                                <div>
-                                    {
-                                        allTemp && allTemp.length > 0 ?
-                                            <select onChange={this.templateChange}>
-                                                <option defaultValue> Select Document Type</option>
-                                                {
-                                                    allTemp.map(data => {
-                                                        return (
-                                                            <option value={data.id}>{data.title}</option>
-                                                        )
-                                                    })
-                                                }
-                                            </select>
-                                            :
-                                            null
-                                    }
-                                        <input type="text" placeholder="Document Name(Optional)" onChange={this.documentNameChange}/>
-                                        <button onClick={this.createDocument}>Create Document</button>
-                                </div>
-                            }
-
-
-                        </div>
-                        :
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
-                }
-            </div> */}
